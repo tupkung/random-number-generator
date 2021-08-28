@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mx-auto text-center">
+        <div class="flex flex-col p-3 text-2xl">
+            <div class="text-9xl" id="result">1</div>
+            <div id="timer">.</div>
+            <div>
+                <button id="setting">settings</button>
+            </div>
+          </div>
+    </div>
+
+    <script>
+        const resultElem = document.getElementById("result");
+        const timerElem = document.getElementById("timer");
+        const settingElem = document.getElementById("setting");
+        const maxRandom = 99;
+        let clockTime = 10;
+        const randomNumber = function(max) {
+            return Math.floor(Math.random() * max);
+        };
+        let count = 0;
+        const getNewRandom = function() {
+            count = 0;
+            timerElem.innerText = "";
+            resultElem.innerText = randomNumber(maxRandom).toString();
+        };
+        getNewRandom();
+        const setTimer = function() {
+            return setInterval(function(){
+                if (count > clockTime) {
+                    getNewRandom();
+                }
+                timerElem.innerText = timerElem.innerText + " . ";
+                count++;
+            }, 1000);
+        }
+        const clearTimer = function(timer) {
+            clearInterval(timer);
+        }
+        let timerObject = setTimer();
+
+        settingElem.onclick = function(evt){
+            evt.preventDefault();
+            clearTimer(timerObject);
+            const result = window.prompt("Enter the clock time in second", clockTime.toString());
+            if (result != null) {
+                clockTime = Number(result);
+                getNewRandom();
+                timerObject = setTimer();
+            } else {
+                timerObject = setTimer();
+            }
+        };
+    </script>
+</body>
+</html>
